@@ -1,0 +1,122 @@
+@model CustomerManagement.Common.DTOs.AppraisalDto;
+@using System.Configuration;
+@{
+    var Form_Title = ViewData["Form_Title"]?.ToString();
+    var Form_Action = ViewData["Form_Action"]?.ToString();
+    var Form_Btn = ViewData["Form_Btn"]?.ToString();
+    var M_RoleID = ViewData["Form_RoleID"]?.ToString();
+    Model.DBAction = Form_Action;
+    if (Model.RoleId == null) { Model.RoleId = !string.IsNullOrWhiteSpace(M_RoleID) ? Convert.ToInt32(M_RoleID) : 0; }
+}
+<div id="modelFormPerfObjEn" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="titleFormPerfObjEn" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="overflow: hidden;">
+            <div id="wrapper">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Form_Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="SubmitAppraisal" method="post">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.DBAction)
+                        @Html.HiddenFor(model => model.AppraisalId)
+                        @Html.HiddenFor(model => model.RoleId)
+                        @Html.HiddenFor(model => model.LoginId)
+                        @Html.HiddenFor(model => model.ActionId)
+                        @Html.HiddenFor(model => model.AssignBy)
+                        @Html.HiddenFor(model => model.AssignTo)
+
+
+                        <div class="form-panel">
+                            <div class="form-group">
+                                <label asp-for="Title"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Message"></label>
+                                <textarea asp-for="Message" class="form-control"></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Weight"></label>
+                                <input asp-for="Weight" class="form-control" />
+                                <span asp-validation-for="Weight" class="text-danger"></span>
+                            </div>
+                            <div class="div-clear">&nbsp;</div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">@Form_Btn</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // Optionally, bind the function to your form submit event or a button click.
+    //$('#FormPerfObj').submit(function (e) {
+    //$("#FormPerfObj").click(function (e) {
+    //    debugger;
+    //    e.preventDefault(); // Prevent the default form post
+    //    // Gather form data based on your form element IDs or names.
+    //    var formData = {
+    //        // Assuming these are the names or ids of your inputs
+    //        Title: $('#Title').val(),
+    //        Message: $('#Message').val(),
+    //        Weight: parseFloat($('#Weight').val()),
+
+    //        // Hidden fields – make sure the selectors match your generated hidden input ids.
+    //        AppraisalId: $('#AppraisalId').val(),
+    //        DBAction: $('#DBAction').val(),
+    //        RoleId: $('#RoleId').val(),
+    //        AssignBy: $('#AssignBy').val(),
+    //        AssignTo: $('#AssignTo').val(),
+    //        ActionId: $('#ActionId').val(),
+    //    };
+
+    //    // Post as JSON to the controller
+    //    $.ajax({
+    //        url: '@Url.Action("Phase1New", "Appraisals")',
+    //        type: "POST",
+    //        data: JSON.stringify(formData),
+    //        contentType: "application/json; charset=utf-8",
+    //        dataType: "json",
+    //        success: function (response) {
+    //            if (response.success) {
+    //                // Handle success (e.g., close modal, show message, redirect, reload data or close modal etc.)
+    //                alert(response.message);
+    //                // Redirect to AppDetails action with appraisalId
+    //                window.location.href = '/Appraisal/AppDetails?id=' + response.appId;
+    //            } else {
+    //                // Iterate over errors and display them appropriately.
+    //                var errorText = "";
+    //                $.each(response.errors, function (index, error) {
+    //                    errorText += error + "\n";
+    //                });
+    //                alert("Validation Errors:\n" + errorText);
+
+    //                // Show validation errors
+    //                $.each(response.errors2, function (key, value) {
+    //                    let span = $('[data-valmsg-for="' + key + '"]');
+    //                    span.text(value[0]);
+    //                });
+    //            }
+    //        },
+    //        error: function (xhr, status, error) {
+    //            // Handle errors
+    //            alert("An error occurred while processing your request: " + error);
+    //            //alert("An error occurred while submitting the form.");
+    //        }
+    //    });
+    //});
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

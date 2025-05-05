@@ -1,0 +1,48 @@
+@model IEnumerable<CustomerManagement.Common.DTOs.AppraisalTaskDto>
+
+@{
+    ViewData["Title"] = "Appraisal List";
+}
+
+<h2>Appraisal List</h2>
+
+@*<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Appraisal</a>
+</p>*@
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Weight</th>
+            <th>Achievement</th>
+            <th>Employee Score</th>
+            <th>Manager Score</th>
+            <th>Employee Comment</th>
+            <th>Manager Comment</th>
+            <th>Currentc Status</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appraisal in Model)
+        {
+            <tr>
+                <td>@appraisal.Title</td>
+                <td>@appraisal.Message</td>
+                <td>@appraisal.Weight</td>
+                <td>@appraisal.Achievement</td>
+                <td>@appraisal.EmployeeScore</td>
+                <td>@appraisal.ManagerScore</td>
+                <td>@appraisal.EmployeeComment</td>
+                <td>@appraisal.ManagerComment</td>
+                <td>@appraisal.CurrentStatus</td>
+                <td>
+                    <a asp-action="AppDetails" asp-route-id="@appraisal.AppraisalId" class="btn btn-warning btn-sm">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

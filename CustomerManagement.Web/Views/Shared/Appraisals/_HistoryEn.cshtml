@@ -1,0 +1,103 @@
+﻿@model CustomerManagement.Web.Models.DetailViewModel;
+@{
+    var phase = Model.AppraisalTaskDto.FormType.Replace("Form", "");
+    ViewData["Title"] = phase + ((phase == "Phase1") ? " - Performance Objection" :
+                             (phase == "Phase2") ? " - Achievement" :
+                             (phase == "Phase3") ? " - Score" :
+                             (phase == "Phase4") ? " - Final HR Review" :
+                             "");
+}
+<link rel="stylesheet" href="~/css/timeline/timeline.css" />
+
+<div class="demo">
+    <div class="container">
+        <div class="row text-center">
+            <h3 class="white">@ViewData["Title"] </h3>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 bg-light border rounded shadow-sm">
+                <div class="main-timeline">
+                    @foreach (var item in Model.AppraisalTaskHistoryDtos)
+                    {
+                        <div class="timeline">
+                            <a href="~/Appraisal/AppDetails?id=@item.AppraisalId&a=@ViewBag.Action" class="timeline-content">
+                                <span class="year">@item.AssignDate.Value.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                <h3 class="title"><b>@item.ActionName</b></h3>
+                                @if (!string.IsNullOrWhiteSpace(@item.CurrentStatus))
+                                {
+                                    <p><b class="sub-title">Current Status: </b>@item.CurrentStatus</p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@item.RoleName))
+                                {
+                                    <p><b class="sub-title">Role: </b>@item.RoleName</p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@item.AssignByName))
+                                {
+                                    <p><b class="sub-title">Assign By: </b>@item.AssignByName</p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@item.AssignToName))
+                                {
+                                    <p><b class="sub-title">Assign To: </b>@item.AssignToName</p>
+                                }
+                                @if (@item.ActionDate.HasValue)
+                                {
+                                    <p><b class="sub-title">User Action Date: </b>@item.ActionDate.Value.ToString("dd/MM/yyyy hh:mm tt")</p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@item.Title))
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Title: </b>@item.Title
+                                    </p>
+                                }
+                                @if (@item.Weight.HasValue)
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Weight: </b>@item.Weight
+                                    </p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@item.Message))
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Message: </b>@item.Message
+                                    </p>
+                                }
+                                @if (@item.Achievement.HasValue)
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Achievement: </b>@item.Achievement
+                                    </p>
+                                }
+                                @if (@item.EmployeeScore.HasValue)
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Employee Score: </b>@item.EmployeeScore
+                                    </p>
+                                }
+                                @if (@item.ManagerScore.HasValue)
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Manager Score: </b>@item.ManagerScore
+                                    </p>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(@item.EmployeeComment))
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Employee Comment: </b>@item.EmployeeComment
+                                    </p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@item.ManagerComment))
+                                {
+                                    <p class="description">
+                                        <b class="sub-title">Manager Comment: </b>@item.ManagerComment
+                                    </p>
+                                }
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

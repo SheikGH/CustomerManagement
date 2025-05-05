@@ -1,0 +1,211 @@
+@model CustomerManagement.Web.Models.DetailViewModel;
+@using CustomerManagement.Common.Helpers;
+@using CustomerManagement.Common.DTOs;
+
+@{
+    var phase = Model.AppraisalTaskDto.FormType.Replace("Form", "");
+    ViewData["Title"] = phase + ((phase == "Phase1") ? " - Performance Objection" :
+                             (phase == "Phase2") ? " - Achievement" :
+                             (phase == "Phase3") ? " - Score" :
+                             (phase == "Phase4") ? " - Final HR Review" :
+                             "");
+    var M_LoginID = ViewBag.M_UserID?.ToString();
+}
+<style>
+    #liButton li a {
+        color: white;
+        background-color: #337ab7;
+        padding: 10px 15px;
+        margin-right: 5px;
+        border-radius: 4px;
+    }
+
+        #liButton li a:hover {
+            background-color: #286090;
+            color: #fff;
+        }
+
+    #liButton li.active a {
+        background-color: #23527c;
+        font-weight: bold;
+    }
+</style>
+
+<div class="card mb-3">
+    <div class="card-header text-white" style="background-color: #c4d6e9;">
+        <h3 class="card-title mb-0">@ViewData["Title"]</h3>
+    </div>
+    <div class="card-body">
+        <div class="card mb-3 with-nav-tabs panel-info">
+            <div class="card-heading" style="background-color: #e9ecef;">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#appraisalDetails" type="button" role="tab">Appraisal Details</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#appraisalHistory" type="button" role="tab">Appraisal History</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="appraisalDetails" role="tabpanel">
+                        <div class="tab-details-en">
+                            @await Html.PartialAsync("Appraisals/_AppraisalDetailsEn", Model.AppraisalTaskDto)
+                            <div class="li-btn-submit">
+                                @if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Employee
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_1_Emp_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormPerfObjEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormPerfObjEn">
+                                                Submit - Performance Objection
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormPerfObj", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Performance Objection - Form" }, { "Form_Action", "Phase1EmpToMngAssign" }, { "Form_Btn", "Submit - Performance Objection" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                else if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Manager
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_1_Mng_FromEmp_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormCommentEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormCommentEn">
+                                                Reject - Performance Objection
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Performance Objection - Reject" }, { "Form_Action", "Phase1MngToEmpReject" }, { "Form_Btn", "Reject - Performance Objection" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormComment2En" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormComment2En">
+                                                Approve - Performance Objection
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment2", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Performance Objection - Approve" }, { "Form_Action", "Phase1MngToEmpApprove" }, { "Form_Btn", "Approve - Performance Objection" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                @if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Employee
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_2_Emp_FromMng_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormAchieveEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormAchieveEn">
+                                                Submit - Achievement
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormAchieve", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Achievement - Form" }, { "Form_Action", "Phase2EmpToMngAssign" }, { "Form_Btn", "Submit - Achievement" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                else if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Manager
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_2_Mng_FromEmp_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormCommentEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormCommentEn">
+                                                Reject - Achievement
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Achievement - Reject" }, { "Form_Action", "Phase2MngToEmpReject" }, { "Form_Btn", "Reject - Achievement" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormComment2En" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormComment2En">
+                                                Approve - Achievement
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment2", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Achievement - Approve" }, { "Form_Action", "Phase2MngToEmpApprove" }, { "Form_Btn", "Approve - Achievement" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                @if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Employee
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_3_Emp_FromMng_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormScoreEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormScoreEn">
+                                                Submit - Score
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormScore", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Score - Form" }, { "Form_Action", "Phase3EmpToMngAssign" }, { "Form_Btn", "Submit - Score" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                else if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Manager
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_3_Mng_FromEmp_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormCommentEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormCommentEn">
+                                                Reject - Score
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Score - Reject" }, { "Form_Action", "Phase3MngToEmpReject" }, { "Form_Btn", "Reject - Score" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormScoreEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormScoreEn">
+                                                Approve - Score
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormScore", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Score - Approve" }, { "Form_Action", "Phase3MngToEmpApprove" }, { "Form_Btn", "Approve - Score" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                @if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Employee
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_4_HR_FromMng_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormCommentEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormCommentEn">
+                                                Submit - Final Comment
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Final Comment - Submit" }, { "Form_Action", "Phase4EmpToMngAssign" }, { "Form_Btn", "Submit - Final Comment" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                                else if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Manager
+                                && (Model.AppraisalDto.ActionId == (int)CommonAppraisal.UserAction.Phase_4_HRMng_FromHR_New))
+                                {
+                                    <ul class="list-inline" id="liButton">
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormCommentEn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormCommentEn">
+                                                Reject -  Final Comment
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", "Final Comment - Reject" }, { "Form_Action", "Phase4MngToEmpReject" }, { "Form_Btn", "Reject -  Final Comment" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button type="button" id="idFormComment2En" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelFormComment2En">
+                                                Approve -  Final Comment
+                                            </button>
+                                            @await Html.PartialAsync("Appraisals/_FormComment2", Model.AppraisalDto, new ViewDataDictionary(ViewData) { {
+                                        "Form_Title", " Final Comment - Approve" }, { "Form_Action", "Phase4MngToEmpApprove" }, { "Form_Btn", "Approve -  Final Comment" }, { "Form_RoleID", ViewBag.M_RoleID } })
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="appraisalHistory" role="tabpanel">
+                        @await Html.PartialAsync("Appraisals/_HistoryEn", Model)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        @Html.ActionLink("Back to List", "AppIndex", new { id = Model.AppraisalTaskDto.LoginId })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+

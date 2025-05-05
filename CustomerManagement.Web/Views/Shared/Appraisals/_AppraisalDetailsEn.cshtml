@@ -1,0 +1,82 @@
+@model CustomerManagement.Common.DTOs.AppraisalTaskDto;
+@{
+    ViewData["Title"] = "Appraisal Details";
+    bool HasValue(object val) => val != null && !(val is string s && string.IsNullOrWhiteSpace(s));
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Left Content -->
+        <div class="col-md-6 mb-4">
+            <div class="p-4 bg-light border rounded shadow-sm">
+                <h4 class="mb-3">Appraisal Info</h4>
+
+                @if (Model.AppraisalId != 0) {
+                    <div class="mb-2"><strong>Appraisal ID:</strong> @Model.AppraisalId</div>
+                }
+                @if (HasValue(Model.RoleName))
+                {
+                    <div class="mb-2"><strong>Role ID:</strong> @Model.RoleName</div>
+                }
+                @if (HasValue(Model.AssignDate) && Model.AssignDate != default) {
+                    @* <div class="mb-2"><strong>Assign Date:</strong> @Model.AssignDate.ToShortDateString()</div> *@
+                    <div class="mb-2"><strong>Assign Date:</strong> @Model.AssignDate</div>
+                }
+                @if (HasValue(Model.AssignByName)) {
+                    <div class="mb-2"><strong>Assign By Name:</strong> @Model.AssignByName</div>
+                }
+                @if (HasValue(Model.AssignToName)) {
+                    <div class="mb-2"><strong>Assign To Name:</strong> @Model.AssignToName</div>
+                }
+                @*@if (Model.ActionId != 0) {
+                    <div class="mb-2"><strong>Action ID:</strong> @Model.ActionId</div>
+                }*@
+                @if (HasValue(Model.ActionDate) && Model.ActionDate != default) {
+                    @* <div class="mb-2"><strong>Action Date:</strong> @Model.ActionDate.ToShortDateString()</div> *@
+                    <div class="mb-2"><strong>Action Date:</strong> @Model.ActionDate</div>
+                }
+                 @if (HasValue(Model.ActionName)) {
+                    <div class="mb-2"><strong>Action Name:</strong> @Model.ActionName</div>
+                }
+                @if (HasValue(Model.ActionStatus)) {
+                    <div class="mb-2"><strong>Action Status:</strong> @Model.ActionStatus</div>
+                }
+                @if (HasValue(Model.Title)) {
+                    <div class="mb-2"><strong>Title:</strong> @Model.Title</div>
+                }
+                @if (HasValue(Model.Message)) {
+                    <div class="mb-2"><strong>Message:</strong> @Model.Message</div>
+                }
+            </div>
+        </div>
+
+        <!-- Right Content -->
+        <div class="col-md-6 mb-4">
+            <div class="p-4 bg-white border rounded shadow-sm">
+                <h4 class="mb-3">Performance Metrics</h4>
+
+                @if (Model.Weight != 0) {
+                    <div class="mb-2"><strong>Weight:</strong> @Model.Weight</div>
+                }
+                @if (Model.Achievement != 0) {
+                    <div class="mb-2"><strong>Achievement:</strong> @Model.Achievement</div>
+                }
+                @if (Model.EmployeeScore != 0) {
+                    <div class="mb-2"><strong>Employee Score:</strong> @Model.EmployeeScore</div>
+                }
+                @if (Model.ManagerScore != 0) {
+                    <div class="mb-2"><strong>Manager Score:</strong> @Model.ManagerScore</div>
+                }
+                @if (HasValue(Model.EmployeeComment)) {
+                    <div class="mb-2"><strong>Employee Comment:</strong> @Model.EmployeeComment</div>
+                }
+                @if (HasValue(Model.ManagerComment)) {
+                    <div class="mb-2"><strong>Manager Comment:</strong> @Model.ManagerComment</div>
+                }
+                @if (HasValue(Model.CurrentStatus)) {
+                    <div class="mb-2"><strong>Status:</strong> @Model.CurrentStatus</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

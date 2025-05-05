@@ -1,0 +1,81 @@
+@model CustomerManagement.Common.DTOs.AppraisalDto;
+@using System.Configuration;
+@using CustomerManagement.Common.Helpers;
+
+@{
+    var Form_Title = ViewData["Form_Title"]?.ToString();
+    var Form_Action = ViewData["Form_Action"]?.ToString();
+    var Form_Btn = ViewData["Form_Btn"]?.ToString();
+    var M_RoleID = ViewData["Form_RoleID"]?.ToString();
+    Model.DBAction = Form_Action;
+    if (Model.RoleId == null) { Model.RoleId = !string.IsNullOrWhiteSpace(M_RoleID) ? Convert.ToInt32(M_RoleID) : 0; }
+}
+<div id="modelFormScoreEn" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="titleFormScoreEn" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="overflow: hidden;">
+            <div id="wrapper">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Form_Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="SubmitAppraisal" method="post">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.DBAction)
+                        @Html.HiddenFor(model => model.AppraisalId)
+                        @Html.HiddenFor(model => model.RoleId)
+                        @Html.HiddenFor(model => model.LoginId)
+                        @Html.HiddenFor(model => model.ActionId)
+                        @Html.HiddenFor(model => model.AssignBy)
+                        @Html.HiddenFor(model => model.AssignTo)
+
+                        @if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Employee)
+                        {
+                            <div class="form-panel">
+                                <div class="form-group">
+                                    <label asp-for="EmployeeScore"></label>
+                                    <input asp-for="EmployeeScore" class="form-control" />
+                                    <span asp-validation-for="EmployeeScore" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-panel">
+                                <div class="form-group">
+                                    <label asp-for="EmployeeComment"></label>
+                                    <textarea asp-for="EmployeeComment" class="form-control"></textarea>
+                                    <span asp-validation-for="EmployeeComment" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+                        else if (Convert.ToInt32(ViewBag.M_RoleID) == (int)CommonAppraisal.Role.Manager)
+                        {
+                            <div class="form-panel">
+                                <div class="form-group">
+                                    <label asp-for="ManagerScore"></label>
+                                    <input asp-for="ManagerScore" class="form-control" />
+                                    <span asp-validation-for="ManagerScore" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-panel">
+                                <div class="form-group">
+                                    <label asp-for="ManagerComment"></label>
+                                    <textarea asp-for="ManagerComment" class="form-control"></textarea>
+                                    <span asp-validation-for="ManagerComment" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">@Form_Btn</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
